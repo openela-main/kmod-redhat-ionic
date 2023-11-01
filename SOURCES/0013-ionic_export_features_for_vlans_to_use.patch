@@ -1,0 +1,37 @@
+Date: Thu, 18 Jun 2020 19:42:49 -0400
+From: Jonathan Toppins <jtoppins@redhat.com>
+To: rhkernel-list@redhat.com
+Cc: darcari@redhat.com, nhorman@redhat.com, linville@redhat.com
+Subject: [PATCH RHEL-8.3 14/16] ionic: export features for vlans to use
+
+Set up vlan_features for use by any vlans above us.
+
+Fixes: beead698b173 ("ionic: Add the basic NDO callbacks for netdev support")
+Signed-off-by: Shannon Nelson <snelson@pensando.io>
+Acked-by: Jonathan Toppins <jtoppins@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit ef7232da6bcd4294cbb2d424bc35885721570f01)
+Bugzilla: 1846868
+Build Info: https://brewweb.engineering.redhat.com/brew/taskinfo?taskID=29498383
+Tested: QE tested devel kernel as well as the partner
+Signed-off-by: Jonathan Toppins <jtoppins@redhat.com>
+---
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index 9d8c969f21cb..7cc1ef657b10 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -1245,6 +1245,7 @@ static int ionic_init_nic_features(struct ionic_lif *lif)
+ 
+ 	netdev->hw_features |= netdev->hw_enc_features;
+ 	netdev->features |= netdev->hw_features;
++	netdev->vlan_features |= netdev->features & ~NETIF_F_VLAN_FEATURES;
+ 
+ 	netdev->priv_flags |= IFF_UNICAST_FLT |
+ 			      IFF_LIVE_ADDR_CHANGE;
+-- 
+2.16.4
+
+

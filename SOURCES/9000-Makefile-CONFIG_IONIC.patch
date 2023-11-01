@@ -1,0 +1,14 @@
+Index: src/drivers/net/ethernet/pensando/ionic/Makefile
+===================================================================
+--- src.orig/drivers/net/ethernet/pensando/ionic/Makefile	2020-06-28 15:21:53.545664652 +0200
++++ src/drivers/net/ethernet/pensando/ionic/Makefile	2020-06-28 15:22:39.483729298 +0200
+@@ -1,6 +1,9 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Copyright(c) 2017 - 2019 Pensando Systems, Inc
+ 
++CONFIG_NET_VENDOR_PENSANDO := y
++CONFIG_IONIC := m
++
+ obj-$(CONFIG_IONIC) := ionic.o
+ 
+ ionic-y := ionic_main.o ionic_bus_pci.o ionic_devlink.o ionic_dev.o \

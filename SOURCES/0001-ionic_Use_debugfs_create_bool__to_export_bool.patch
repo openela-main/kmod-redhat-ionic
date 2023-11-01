@@ -1,0 +1,43 @@
+Date: Thu, 18 Jun 2020 19:42:37 -0400
+From: Jonathan Toppins <jtoppins@redhat.com>
+To: rhkernel-list@redhat.com
+Cc: darcari@redhat.com, nhorman@redhat.com, linville@redhat.com
+Subject: [PATCH RHEL-8.3 02/16] ionic: Use debugfs_create_bool() to export
+ bool
+
+Currently bool ionic_cq.done_color is exported using
+debugfs_create_u8(), which requires a cast, preventing further compiler
+checks.
+
+Fix this by switching to debugfs_create_bool(), and dropping the cast.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Shannon Nelson <snelson@pensando.io>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 0735ccc9d9a4ce09154395feb70b804de7cc6ebf)
+Bugzilla: 1848149
+Build Info: https://brewweb.engineering.redhat.com/brew/taskinfo?taskID=29498383
+Tested: QE tested devel kernel as well as the partner
+Signed-off-by: Jonathan Toppins <jtoppins@redhat.com>
+---
+ drivers/net/ethernet/pensando/ionic/ionic_debugfs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_debugfs.c b/drivers/net/ethernet/pensando/ionic/ionic_debugfs.c
+index 5f8fc58d42b3..11621ccc1faf 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_debugfs.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_debugfs.c
+@@ -170,8 +170,7 @@ void ionic_debugfs_add_qcq(struct ionic_lif *lif, struct ionic_qcq *qcq)
+ 	debugfs_create_x64("base_pa", 0400, cq_dentry, &cq->base_pa);
+ 	debugfs_create_u32("num_descs", 0400, cq_dentry, &cq->num_descs);
+ 	debugfs_create_u32("desc_size", 0400, cq_dentry, &cq->desc_size);
+-	debugfs_create_u8("done_color", 0400, cq_dentry,
+-			  (u8 *)&cq->done_color);
++	debugfs_create_bool("done_color", 0400, cq_dentry, &cq->done_color);
+ 
+ 	debugfs_create_file("tail", 0400, cq_dentry, cq, &cq_tail_fops);
+ 
+-- 
+2.16.4
+
+
