@@ -1,0 +1,29 @@
+Index: src/drivers/net/ethernet/pensando/ionic/ionic_backport_compat.h
+===================================================================
+--- src.orig/drivers/net/ethernet/pensando/ionic/ionic_backport_compat.h	2020-06-28 15:23:55.318836007 +0200
++++ src/drivers/net/ethernet/pensando/ionic/ionic_backport_compat.h	2020-06-28 15:29:46.854330796 +0200
+@@ -1,6 +1,8 @@
+ #ifndef IONIC_BACKPORT_COMPAT_H
+ #define IONIC_BACKPORT_COMPAT_H
+ 
++#include <linux/dynamic_debug.h>
++#include <linux/printk.h>
+ #include <linux/sfp.h>
+ 
+ /* SFF8024 defined constants */
+@@ -58,4 +60,15 @@
+ 	SFF8024_ECC_2_5GBASE_T          = 0x1e,
+ };
+ 
++
++#ifndef dynamic_hex_dump
++# define dynamic_hex_dump(prefix_str, prefix_type, rowsize,		\
++			 groupsize, buf, len, ascii)			\
++	do { if (0)							\
++		print_hex_dump(KERN_DEBUG, prefix_str, prefix_type,	\
++				rowsize, groupsize, buf, len, ascii);	\
++	} while (0)
++#endif
++
++
+ #endif /* IONIC_BACKPORT_COMPAT_H */

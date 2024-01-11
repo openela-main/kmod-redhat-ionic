@@ -1,0 +1,12 @@
+Index: src/drivers/net/ethernet/pensando/ionic/ionic_main.c
+===================================================================
+--- src.orig/drivers/net/ethernet/pensando/ionic/ionic_main.c	2020-06-28 22:33:12.257522904 +0200
++++ src/drivers/net/ethernet/pensando/ionic/ionic_main.c	2020-06-28 22:33:58.336569011 +0200
+@@ -16,6 +16,7 @@
+ MODULE_DESCRIPTION(IONIC_DRV_DESCRIPTION);
+ MODULE_AUTHOR("Pensando Systems, Inc");
+ MODULE_LICENSE("GPL");
++MODULE_VERSION("4.18.0.210_dup8.2");
+ 
+ static const char *ionic_error_to_str(enum ionic_status_code code)
+ {

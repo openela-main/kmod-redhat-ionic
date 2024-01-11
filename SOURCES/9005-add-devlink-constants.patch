@@ -1,0 +1,18 @@
+Index: src/drivers/net/ethernet/pensando/ionic/ionic_backport_compat.h
+===================================================================
+--- src.orig/drivers/net/ethernet/pensando/ionic/ionic_backport_compat.h	2020-06-28 19:17:55.546945346 +0200
++++ src/drivers/net/ethernet/pensando/ionic/ionic_backport_compat.h	2020-06-28 19:18:04.765957119 +0200
+@@ -71,4 +71,13 @@
+ #endif
+ 
+ 
++/* Part number, identifier of asic design */
++#define DEVLINK_INFO_VERSION_GENERIC_ASIC_ID    "asic.id"
++/* Revision of asic design */
++#define DEVLINK_INFO_VERSION_GENERIC_ASIC_REV   "asic.rev"
++
++/* Overall FW version */
++#define DEVLINK_INFO_VERSION_GENERIC_FW         "fw"
++
++
+ #endif /* IONIC_BACKPORT_COMPAT_H */

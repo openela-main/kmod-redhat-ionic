@@ -1,0 +1,45 @@
+From 15d95cc39f17d6edccdbbbabdb105055d420baa9 Mon Sep 17 00:00:00 2001
+From: Jonathan Toppins <jtoppins@redhat.com>
+Date: Tue, 28 Apr 2020 19:08:30 -0400
+Subject: [PATCH] [netdrv] ionic: use new helper tcp_v6_gso_csum_prep
+
+Message-id: <703cf10dc3ec18f4b7ccd734863ba19c26039bb6.1588100139.git.jtoppins@redhat.com>
+Patchwork-id: 305675
+Patchwork-instance: patchwork
+O-Subject: [PATCH RHEL-8.3 46/84] ionic: use new helper tcp_v6_gso_csum_prep
+Bugzilla: 1780645
+RH-Acked-by: John Linville <linville@redhat.com>
+RH-Acked-by: Corinna Vinschen <vinschen@redhat.com>
+RH-Acked-by: Tony Camuso <tcamuso@redhat.com>
+
+Use new helper tcp_v6_gso_csum_prep in additional network drivers.
+
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Acked-by: Shannon Nelson <snelson@pensando.io>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit fa6b84295225b96bed9321301f218eda6ca73edc)
+Bugzilla: 1780645
+Build Info: https://brewweb.engineering.redhat.com/brew/taskinfo?taskID=28076826
+Tested: partner and local testing show driver seems to work as expected
+Signed-off-by: Jonathan Toppins <jtoppins@redhat.com>
+Signed-off-by: Frantisek Hrbata <fhrbata@redhat.com>
+---
+ drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+Index: src/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+===================================================================
+--- src.orig/drivers/net/ethernet/pensando/ionic/ionic_txrx.c	2020-06-28 19:17:54.295943746 +0200
++++ src/drivers/net/ethernet/pensando/ionic/ionic_txrx.c	2020-06-28 19:18:08.537961935 +0200
+@@ -657,7 +657,10 @@
+ 					   ip_hdr(skb)->daddr,
+ 					   0, IPPROTO_TCP, 0);
+ 	} else if (skb->protocol == cpu_to_be16(ETH_P_IPV6)) {
+-		tcp_v6_gso_csum_prep(skb);
++		tcp_hdr(skb)->check =
++			~csum_ipv6_magic(&ipv6_hdr(skb)->saddr,
++					 &ipv6_hdr(skb)->daddr,
++					 0, IPPROTO_TCP, 0);
+ 	}
+ 
+ 	return 0;

@@ -1,0 +1,36 @@
+Date: Thu, 18 Jun 2020 19:42:51 -0400
+From: Jonathan Toppins <jtoppins@redhat.com>
+To: rhkernel-list@redhat.com
+Cc: darcari@redhat.com, nhorman@redhat.com, linville@redhat.com
+Subject: [PATCH RHEL-8.3 16/16] ionic: add pcie_print_link_status
+
+Print the PCIe link information for our device.
+
+Fixes: 77f972a7077d ("ionic: remove support for mgmt device")
+Signed-off-by: Shannon Nelson <snelson@pensando.io>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit c25cba3689c7ab5ae6ee7228d1d49a5652429229)
+Bugzilla: 1846506
+Build Info: https://brewweb.engineering.redhat.com/brew/taskinfo?taskID=29498383
+Tested: QE tested devel kernel as well as the partner
+Signed-off-by: Jonathan Toppins <jtoppins@redhat.com>
+---
+ drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+index 0ac6acbc5f31..2924cde440aa 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+@@ -248,6 +248,7 @@ static int ionic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	}
+ 
+ 	pci_set_master(pdev);
++	pcie_print_link_status(pdev);
+ 
+ 	err = ionic_map_bars(ionic);
+ 	if (err)
+-- 
+2.16.4
+
+

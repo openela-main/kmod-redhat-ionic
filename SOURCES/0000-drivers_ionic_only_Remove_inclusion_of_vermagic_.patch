@@ -1,0 +1,55 @@
+Date: Thu, 18 Jun 2020 19:42:36 -0400
+From: Jonathan Toppins <jtoppins@redhat.com>
+To: rhkernel-list@redhat.com
+Cc: darcari@redhat.com, nhorman@redhat.com, linville@redhat.com
+Subject: [PATCH RHEL-8.3 01/16] drivers: [ionic only] Remove inclusion of
+ vermagic header
+
+Get rid of linux/vermagic.h includes, so that MODULE_ARCH_VERMAGIC from
+the arch header arch/x86/include/asm/module.h won't be redefined.
+
+  In file included from ./include/linux/module.h:30,
+                   from drivers/net/ethernet/3com/3c515.c:56:
+  ./arch/x86/include/asm/module.h:73: warning: "MODULE_ARCH_VERMAGIC"
+redefined
+     73 | # define MODULE_ARCH_VERMAGIC MODULE_PROC_FAMILY
+        |
+  In file included from drivers/net/ethernet/3com/3c515.c:25:
+  ./include/linux/vermagic.h:28: note: this is the location of the
+previous definition
+     28 | #define MODULE_ARCH_VERMAGIC ""
+        |
+
+Fixes: 6bba2e89a88c ("net/3com: Delete driver and module versions from 3com drivers")
+Co-developed-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Shannon Nelson <snelson@pensando.io> # ionic
+Acked-by: Sebastian Reichel <sre@kernel.org> # power
+Signed-off-by: Leon Romanovsky <leonro@mellanox.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 1c79031f8a75c132bbd42e3ef20267af97b67466)
+Bugzilla: 1848149
+Build Info: https://brewweb.engineering.redhat.com/brew/taskinfo?taskID=29498383
+Tested: QE tested devel kernel as well as the partner
+Signed-off-by: Jonathan Toppins <jtoppins@redhat.com>
+---
+ drivers/net/ethernet/pensando/ionic/ionic_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+index 3344bc1f7671..15911ee1af32 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+@@ -6,7 +6,7 @@
+ #include <linux/module.h>
+ #include <linux/netdevice.h>
+ #include <linux/utsname.h>
+-#include <linux/vermagic.h>
++#include <generated/utsrelease.h>
+ 
+ #include "ionic.h"
+ #include "ionic_bus.h"
+-- 
+2.16.4
+
+
